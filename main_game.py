@@ -7,12 +7,13 @@ from tiles import *
 from player import *
 from enemies import *
 from level import *
-
+import time
 import sys
 
 pygame.init()
 
 size = (width, height) = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+size = (width, height) = (int(pygame.display.Info().current_w/2), int(pygame.display.Info().current_h/2))
 
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
@@ -20,13 +21,15 @@ color = (0, 0, 0)
 images = {"w": "images/tiles/wall12.gif", "f": "images/tiles/floor13.gif",
           "s": {True: "images/tiles/openDoor31.gif", False: "images/tiles/door31.gif"},
           "e": {True: "images/tiles/openDoor12.gif", False: "images/tiles/door12.gif"}}
-player = Player("images/player/superhero.gif", (16, 16), False)
+player_images = ['images/player/leperstand.png', 'images/player/leperwalk1.png', 'images/player/leperwalk2.png']
+player = Player('images/player/leperstand.png', (16, 16), False)
+print(player)
+counter = 0
 levels = []
 level_num = 0
 current_level = None
 font = pygame.font.SysFont('oldenglishtext', 32)
 debug = True
-
 
 def change_level(change):
     global level_num, current_level
@@ -81,7 +84,7 @@ def save_game():
 # initializes globals to starting state
 def restart():
     global player, levels, level_num, current_level
-    player = Player("images/player/superhero.gif", (16, 16), False)
+    player = Player('images/player/leperstand.png', (16, 16), False)
     levels = [RandomLevel(player, images, .5, 2)]
     level_num = 0
     current_level = levels[level_num]
@@ -89,7 +92,8 @@ def restart():
 
 
 def main():
-    global screen, level_num, current_level
+    global screen, level_num, current_level, counter
+    counter = 0
     if not load_game():
         restart()
     restart_pressed = False
